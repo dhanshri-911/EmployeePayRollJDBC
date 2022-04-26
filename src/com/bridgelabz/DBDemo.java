@@ -31,11 +31,30 @@ public class DBDemo {
         display(resultSet);
         System.out.println("");
         System.out.println("After Update");
-        String updatequery = "update employee_payroll set Basic_pay = ? where name = ?";
+        String updatequery = "update employee_payroll set Basic_Pay = ? where name = ?";
         updateQuery(updatequery);
-        System.out.println("+****");
+        System.out.println("Done");
         String search = "select * from employee_payroll where name =?";
         retriveBYName(search);
+        String fromDate = "select * from employee_payroll where start between ? and ? ";
+        fromPerticularDate(fromDate);
+    }
+
+    private static void fromPerticularDate(String fromDate) throws SQLException {
+        PreparedStatement preparedStatement = con.prepareStatement(fromDate);
+        preparedStatement.setString(1, "2018-01-03");
+        preparedStatement.setString(2, "2019-11-13");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if(resultSet.next())
+        {
+            do{
+                System.out.println(resultSet.getString(1)+","+resultSet.getString(2)+","+resultSet.getString(3)+","+resultSet.getString(4)+","+resultSet.getString(5));
+            }while(resultSet.next());
+        }
+        else
+        {
+            System.out.println("Record Not Found...");
+        }
     }
 
     private static void retriveBYName(String search) throws SQLException {
