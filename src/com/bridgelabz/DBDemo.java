@@ -27,28 +27,41 @@ public class DBDemo {
         System.out.println("");
         Statement statement = con.createStatement();
         ResultSet resultSet = statement.executeQuery("select * from employee_payroll");
-        while (resultSet.next()){
-            System.out.print(resultSet.getInt("id")+" ");
-            System.out.print(resultSet.getString("name")+" ");
-            System.out.print(resultSet.getString("gender")+" ");
-            System.out.print(resultSet.getLong("salary")+" ");
-            System.out.print(resultSet.getDate("start")+" ");
-            System.out.print(resultSet.getString("department")+" ");
-            System.out.print(resultSet.getString("phone")+" ");
-            System.out.print(resultSet.getString("address")+" ");
-            System.out.print(resultSet.getFloat("Basic_pay")+" ");
-            System.out.print(resultSet.getFloat("deductions")+" ");
-            System.out.print(resultSet.getFloat("Taxable_pay")+" ");
-            System.out.print(resultSet.getFloat("IncomeTax")+" ");
-            System.out.print(resultSet.getFloat("Net_pay")+" ");
-            System.out.println("");
+        System.out.println("Before Update");
+        display(resultSet);
+        System.out.println("After Update");
+        String updatequery = "update employee_payroll set Basic_Pay = ? where name = ?";
+        PreparedStatement preparedStatement = con.prepareStatement(updatequery);
+        preparedStatement.setInt(1,3000000);
+        preparedStatement.setString(2,"Terisa");
+        preparedStatement.executeUpdate();
+        String updatedquery = "select * from employee_payroll where name = ?";
+        PreparedStatement preparedStatement1 = con.prepareStatement(updatedquery);
+        ResultSet resultSet1 = preparedStatement1.executeQuery("select * from employee_payroll");
+        display(resultSet1);
+    }
+    static void listDrivers() {
+        Enumeration<Driver> driverList = DriverManager.getDrivers();
+        while (driverList.hasMoreElements()) {
+            Driver driverClass = driverList.nextElement();
+            System.out.println("   " + driverClass.getClass().getName());
         }
     }
-    static void listDrivers(){
-        Enumeration<Driver> driverList = DriverManager.getDrivers();
-        while (driverList.hasMoreElements()){
-            Driver driverClass = driverList.nextElement();
-            System.out.println("   "+ driverClass.getClass().getName());
-        }
+        private static void  display(ResultSet resultSet) throws SQLException {
+            while (resultSet.next()){
+                System.out.print(resultSet.getInt("id")+" ");
+                System.out.print(resultSet.getString("name")+" ");
+                System.out.print(resultSet.getString("department")+" ");
+                System.out.print(resultSet.getLong("phone")+" ");
+                System.out.print(resultSet.getString("address")+" ");
+                System.out.print(resultSet.getString("gender")+" ");
+                System.out.print(resultSet.getFloat("Basic_pay")+" ");
+                System.out.print(resultSet.getFloat("deductions")+" ");
+                System.out.print(resultSet.getFloat("Taxable_pay")+" ");
+                System.out.print(resultSet.getFloat("IncomeTax")+" ");
+                System.out.print(resultSet.getFloat("Net_pay")+" ");
+                System.out.print(resultSet.getDate("start")+" ");
+                System.out.println("");
+            }
     }
 }
